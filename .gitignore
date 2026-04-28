@@ -47,28 +47,5 @@ final_experiments/sep2025_more_complex_synthetic_sweeps/results/*
 final_experiments/sep2025_mnist_experiments/* 
 
 
-final_experiments/sep2025_more_complex_synthetic_sweeps/mlp_and_fis_good_runs_seed_0.json
-
-
-# James
-jam_test/*
-jam_test_desktop/*
-jam_notebooks/results/*
-#remove later
-src/sian/synth/data/*  
-jam_notebooks/catboost_info/*
-jam_notebooks/sep8th_testing_models/*
-
-src/sian/models/external_models/grandslamin_src/visualize_main_effects/*
-src/sian/models/external_models/grandslamin_src/Saves_grand_slamin/*
-# deprecated_notebooks/jam_debugging_mnist_july_27th/
-# deprecated_notebooks/jam_debugging_mnist_july_27th/extra_debug_data/
-deprecated/jam_debugging_mnist_july_27th/extra_debug_data/
-
-# Rahil
-rahil_notebooks/data/
-rahil_notebooks/logs/
-rahil_notebooks/results/
-
 
 
