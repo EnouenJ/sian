@@ -1,0 +1,110 @@
+#!/usr/bin/env bash
+
+
+# https://stackoverflow.com/questions/79297468/how-to-write-a-gpu-worker-pool-to-run-multiple-tasks-at-the-same-time-in-bash
+
+mkfifo free_gpus2
+exec 3<>free_gpus2
+
+# write the GPUs you want to use (0,1,2,3) into the fifo.
+printf '%s\n' 0 1 2 3 >&3  &
+
+
+allscripts=(
+# "shell_scripts/slurm_SYNTH_simple_discrete_synthwave_v9_D10_Ik5_s3.9.27_seed0_POnone_MLPFalse_SIANFalse_MNISTsmooth_FISmaximal_K2_BS32_N566.sh"
+# "shell_scripts/slurm_SYNTH_simple_discrete_synthwave_v9_D10_Ik5_s3.9.27_seed0_POnone_MLPFalse_SIANFalse_MNISTsmooth_FISmaximal_K2_BS128_N566.sh"
+# "shell_scripts/slurm_SYNTH_simple_discrete_synthwave_v9_D10_Ik5_s3.9.27_seed0_POnone_MLPFalse_SIANFalse_MNISTsmooth_FISmaximal_K2_BS32_N673.sh"
+# "shell_scripts/slurm_SYNTH_simple_discrete_synthwave_v9_D10_Ik5_s3.9.27_seed0_POnone_MLPFalse_SIANFalse_MNISTsmooth_FISmaximal_K2_BS128_N673.sh"
+# "shell_scripts/slurm_SYNTH_simple_discrete_synthwave_v9_D10_Ik5_s3.9.27_seed0_POnone_MLPFalse_SIANFalse_MNISTsmooth_FISmaximal_K2_BS32_N800.sh"
+# "shell_scripts/slurm_SYNTH_simple_discrete_synthwave_v9_D10_Ik5_s3.9.27_seed0_POnone_MLPFalse_SIANFalse_MNISTsmooth_FISmaximal_K2_BS128_N800.sh"
+# "shell_scripts/slurm_SYNTH_simple_discrete_synthwave_v9_D10_Ik5_s3.9.27_seed0_POnone_MLPFalse_SIANFalse_MNISTsmooth_FISmaximal_K2_BS32_N951.sh"
+# "shell_scripts/slurm_SYNTH_simple_discrete_synthwave_v9_D10_Ik5_s3.9.27_seed0_POnone_MLPFalse_SIANFalse_MNISTsmooth_FISmaximal_K2_BS128_N951.sh"
+
+
+
+
+#runall2.sh
+
+# "shell_scripts/slurm_SYNTH_simple_discrete_synthwave_v9_D10_Ik5_s3.9.27_seed0_POnone_MLPFalse_SIANFalse_MNISTsmooth_FISmaximal_K2_BS128_N566.sh"
+# "shell_scripts/slurm_SYNTH_simple_discrete_synthwave_v9_D10_Ik5_s3.9.27_seed0_POnone_MLPFalse_SIANFalse_MNISTsmooth_FISmaximal_K2_BS128_N673.sh"
+# "shell_scripts/slurm_SYNTH_simple_discrete_synthwave_v9_D10_Ik5_s3.9.27_seed0_POnone_MLPFalse_SIANFalse_MNISTsmooth_FISmaximal_K2_BS128_N800.sh"
+# "shell_scripts/slurm_SYNTH_simple_discrete_synthwave_v9_D10_Ik5_s3.9.27_seed0_POnone_MLPFalse_SIANFalse_MNISTsmooth_FISmaximal_K2_BS128_N951.sh"
+
+
+#512 and l1shape = 5.0e-4
+# "shell_scripts/slurm_SYNTH_simple_discrete_synthwave_v9_D10_Ik5_s3.9.27_seed0_POnone_MLPFalse_SIANFalse_MNISTsmooth_FISmaximal_K2_BS512_N566.sh"
+# "shell_scripts/slurm_SYNTH_simple_discrete_synthwave_v9_D10_Ik5_s3.9.27_seed0_POnone_MLPFalse_SIANFalse_MNISTsmooth_FISmaximal_K2_BS512_N673.sh"
+# "shell_scripts/slurm_SYNTH_simple_discrete_synthwave_v9_D10_Ik5_s3.9.27_seed0_POnone_MLPFalse_SIANFalse_MNISTsmooth_FISmaximal_K2_BS512_N800.sh"
+# "shell_scripts/slurm_SYNTH_simple_discrete_synthwave_v9_D10_Ik5_s3.9.27_seed0_POnone_MLPFalse_SIANFalse_MNISTsmooth_FISmaximal_K2_BS512_N951.sh"
+
+
+
+#512 and l1shape = 5.0e-4 and LR=1.0e-2
+# "shell_scripts/slurm_SYNTH_simple_discrete_synthwave_v9_D10_Ik5_s3.9.27_seed0_POnone_MLPFalse_SIANFalse_MNISTsmooth_FISmaximal_K2_BS512_N566.sh"
+# "shell_scripts/slurm_SYNTH_simple_discrete_synthwave_v9_D10_Ik5_s3.9.27_seed0_POnone_MLPFalse_SIANFalse_MNISTsmooth_FISmaximal_K2_BS512_N673.sh"
+# "shell_scripts/slurm_SYNTH_simple_discrete_synthwave_v9_D10_Ik5_s3.9.27_seed0_POnone_MLPFalse_SIANFalse_MNISTsmooth_FISmaximal_K2_BS512_N800.sh"
+# "shell_scripts/slurm_SYNTH_simple_discrete_synthwave_v9_D10_Ik5_s3.9.27_seed0_POnone_MLPFalse_SIANFalse_MNISTsmooth_FISmaximal_K2_BS512_N951.sh"
+
+
+#Turning L1 off to see the peak immediately; even gam1 isnt showing grokking yet
+
+# "shell_scripts/slurm_SYNTH_simple_discrete_synthwave_v9_D10_Ik5_s3.9.27_seed0_POnone_MLPFalse_SIANFalse_MNISTsmooth_FISmaximal_K2_BS512_N566.sh"
+# "shell_scripts/slurm_SYNTH_simple_discrete_synthwave_v9_D10_Ik5_s3.9.27_seed0_POnone_MLPFalse_SIANFalse_MNISTsmooth_FISmaximal_K2_BS512_N673.sh"
+# "shell_scripts/slurm_SYNTH_simple_discrete_synthwave_v9_D10_Ik5_s3.9.27_seed0_POnone_MLPFalse_SIANFalse_MNISTsmooth_FISmaximal_K2_BS512_N800.sh"
+# "shell_scripts/slurm_SYNTH_simple_discrete_synthwave_v9_D10_Ik5_s3.9.27_seed0_POnone_MLPFalse_SIANFalse_MNISTsmooth_FISmaximal_K2_BS512_N951.sh"
+
+
+
+#GCLOUD 09/16/25 @ 10:00pm -- doing larger N sweep for GAM2 on unregularized path
+# "shell_scripts/slurm_SYNTH_simple_discrete_synthwave_v9_D10_Ik5_s3.9.27_seed0_POnone_MLPFalse_SIANFalse_MNISTsmooth_FISmaximal_K2_BS512_N951.sh"
+# "shell_scripts/slurm_SYNTH_simple_discrete_synthwave_v9_D10_Ik5_s3.9.27_seed0_POnone_MLPFalse_SIANFalse_MNISTsmooth_FISmaximal_K2_BS512_N1131.sh"
+# "shell_scripts/slurm_SYNTH_simple_discrete_synthwave_v9_D10_Ik5_s3.9.27_seed0_POnone_MLPFalse_SIANFalse_MNISTsmooth_FISmaximal_K2_BS512_N1345.sh"
+# "shell_scripts/slurm_SYNTH_simple_discrete_synthwave_v9_D10_Ik5_s3.9.27_seed0_POnone_MLPFalse_SIANFalse_MNISTsmooth_FISmaximal_K2_BS512_N1600.sh"
+
+
+# #GCLOUD 09/17/25 @ 3:20am -- doing more grapeshots with N sweep for GAM2 on unregularized path
+# "shell_scripts/slurm_SYNTH_simple_discrete_synthwave_v9_D10_Ik5_s3.9.27_seed0_POnone_MLPFalse_SIANFalse_MNISTsmooth_FISmaximal_K2_BS512_N1903.sh"
+# "shell_scripts/slurm_SYNTH_simple_discrete_synthwave_v9_D10_Ik5_s3.9.27_seed0_POnone_MLPFalse_SIANFalse_MNISTsmooth_FISmaximal_K2_BS512_N2263.sh"
+# "shell_scripts/slurm_SYNTH_simple_discrete_synthwave_v9_D10_Ik5_s3.9.27_seed0_POnone_MLPFalse_SIANFalse_MNISTsmooth_FISmaximal_K2_BS512_N2691.sh"
+# "shell_scripts/slurm_SYNTH_simple_discrete_synthwave_v9_D10_Ik5_s3.9.27_seed0_POnone_MLPFalse_SIANFalse_MNISTsmooth_FISmaximal_K2_BS512_N3200.sh"
+# "shell_scripts/slurm_SYNTH_simple_discrete_synthwave_v9_D10_Ik5_s3.9.27_seed0_POnone_MLPFalse_SIANFalse_MNISTsmooth_FISmaximal_K2_BS512_N3805.sh"
+# "shell_scripts/slurm_SYNTH_simple_discrete_synthwave_v9_D10_Ik5_s3.9.27_seed0_POnone_MLPFalse_SIANFalse_MNISTsmooth_FISmaximal_K2_BS512_N4525.sh"
+# "shell_scripts/slurm_SYNTH_simple_discrete_synthwave_v9_D10_Ik5_s3.9.27_seed0_POnone_MLPFalse_SIANFalse_MNISTsmooth_FISmaximal_K2_BS512_N5382.sh"
+# "shell_scripts/slurm_SYNTH_simple_discrete_synthwave_v9_D10_Ik5_s3.9.27_seed0_POnone_MLPFalse_SIANFalse_MNISTsmooth_FISmaximal_K2_BS512_N6400.sh"
+
+
+#GCLOUD @ 1:50pm on 09/17/25
+# "shell_scripts/slurm_SYNTH_simple_discrete_synthwave_v9_D10_Ik5_s3.9.27_seed0_POnone_MLPFalse_SIANFalse_MNISTsmooth_FISmaximal_K1_BS512_N18.sh"
+# "shell_scripts/slurm_SYNTH_simple_discrete_synthwave_v9_D10_Ik5_s3.9.27_seed0_POnone_MLPFalse_SIANFalse_MNISTsmooth_FISmaximal_K1_BS512_N21.sh"
+# "shell_scripts/slurm_SYNTH_simple_discrete_synthwave_v9_D10_Ik5_s3.9.27_seed0_POnone_MLPFalse_SIANFalse_MNISTsmooth_FISmaximal_K1_BS512_N25.sh"
+# "shell_scripts/slurm_SYNTH_simple_discrete_synthwave_v9_D10_Ik5_s3.9.27_seed0_POnone_MLPFalse_SIANFalse_MNISTsmooth_FISmaximal_K1_BS512_N30.sh"
+# "shell_scripts/slurm_SYNTH_simple_discrete_synthwave_v9_D10_Ik5_s3.9.27_seed0_POnone_MLPFalse_SIANFalse_MNISTsmooth_FISmaximal_K1_BS512_N35.sh"
+# "shell_scripts/slurm_SYNTH_simple_discrete_synthwave_v9_D10_Ik5_s3.9.27_seed0_POnone_MLPFalse_SIANFalse_MNISTsmooth_FISmaximal_K1_BS512_N42.sh"
+# "shell_scripts/slurm_SYNTH_simple_discrete_synthwave_v9_D10_Ik5_s3.9.27_seed0_POnone_MLPFalse_SIANFalse_MNISTsmooth_FISmaximal_K1_BS512_N50.sh"
+# "shell_scripts/slurm_SYNTH_simple_discrete_synthwave_v9_D10_Ik5_s3.9.27_seed0_POnone_MLPFalse_SIANFalse_MNISTsmooth_FISmaximal_K1_BS512_N59.sh"
+
+
+
+#GCLOUD @ 6:00pm on 09/17/25
+"shell_scripts/slurm_SYNTH_simple_discrete_synthwave_v9_D10_Ik5_s3.9.27_seed0_POnone_MLPFalse_SIANFalse_MNISTsmooth_FISmaximal_K1_BS512_N71.sh"
+"shell_scripts/slurm_SYNTH_simple_discrete_synthwave_v9_D10_Ik5_s3.9.27_seed0_POnone_MLPFalse_SIANFalse_MNISTsmooth_FISmaximal_K1_BS512_N84.sh"
+"shell_scripts/slurm_SYNTH_simple_discrete_synthwave_v9_D10_Ik5_s3.9.27_seed0_POnone_MLPFalse_SIANFalse_MNISTsmooth_FISmaximal_K1_BS512_N100.sh"
+"shell_scripts/slurm_SYNTH_simple_discrete_synthwave_v9_D10_Ik5_s3.9.27_seed0_POnone_MLPFalse_SIANFalse_MNISTsmooth_FISmaximal_K1_BS512_N119.sh"
+"shell_scripts/slurm_SYNTH_simple_discrete_synthwave_v9_D10_Ik5_s3.9.27_seed0_POnone_MLPFalse_SIANFalse_MNISTsmooth_FISmaximal_K1_BS512_N141.sh"
+"shell_scripts/slurm_SYNTH_simple_discrete_synthwave_v9_D10_Ik5_s3.9.27_seed0_POnone_MLPFalse_SIANFalse_MNISTsmooth_FISmaximal_K1_BS512_N168.sh"
+"shell_scripts/slurm_SYNTH_simple_discrete_synthwave_v9_D10_Ik5_s3.9.27_seed0_POnone_MLPFalse_SIANFalse_MNISTsmooth_FISmaximal_K1_BS512_N200.sh"
+"shell_scripts/slurm_SYNTH_simple_discrete_synthwave_v9_D10_Ik5_s3.9.27_seed0_POnone_MLPFalse_SIANFalse_MNISTsmooth_FISmaximal_K1_BS512_N238.sh"
+
+)
+
+
+for exe in ${allscripts[@]}
+do
+    read gpu
+    sleep 3
+    sleep 15
+    { printf "GPU ${gpu}  for ${exe}\n" >> "allscripts_logs.txt"; CUDA_VISIBLE_DEVICES="$gpu" "$exe"; echo "$gpu" >&3; } &
+done <&3
+wait
+
+# rm free_gpus
