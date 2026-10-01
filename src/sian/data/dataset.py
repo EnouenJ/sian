@@ -215,6 +215,11 @@ class Final_TabularDataset:
 
     def get_N(self):
         return self.trnvalX.shape[0]
+        
+    def get_base_D(self):
+        full_readable_labels = self.label_stuff_dict["full_readable_labels"]
+        return full_readable_labels["D0"]
+        
     
     def get_dataset_id(self):
         return self.header_dict["dataset_id"]

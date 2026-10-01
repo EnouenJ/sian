@@ -118,6 +118,13 @@ class MLP(nn.Module):
     def collectParameters(self):
         dnn_params = self.dnn.collectParameters()
         return torch.cat([dnn_params])
+        
+    def predict(self, np_x): # 09/25/26 @ 6:00pm -- hack b/c I dont think I have .device() implememnted everywhere
+        with torch.no_grad():
+            # return self.forward( torch.Tensor(np_x,device=self.dnn.hiddens[0].weight.device) )[0].cpu().numpy()
+            # return self.forward( torch.Tensor(np_x,device=self.dnn.hiddens[0].weight.device) )[0].cpu().numpy()[:,0] #09/25/26 @ 7:30pm
+            mydevice = self.dnn.hiddens[0].weight.device
+            return self.forward( torch.Tensor(np_x).to(mydevice) )[0].cpu().numpy()[:,0]  #09/29/26 @ 12:30pm
 
 
 # should be able to adapt between

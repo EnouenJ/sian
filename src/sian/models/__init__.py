@@ -17,12 +17,15 @@ from sian.models.training import (
     # masked_gradient_descent_training,
     either_normal_or_masked___gradient_descent_training,
     evaluate_model_on_test_set,
+    surrogate_based___gradient_descent_training,
 )
 
 from sian.models.masked_models import (
     MaskedMLP,
     InstaSHAPMasked_SIAN,
     # MaskedGAM, #outdated version?
+    
+    DoubleMaskedMLP
 )
 
 # from .jun22_gamgood_models import mnist_Adaptive_DNN_plus_GAM as mnist_SIAN

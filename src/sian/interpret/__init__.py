@@ -52,7 +52,14 @@ from sian.interpret.explainer2 import fake_FID_Hyperparameters
 
 
 
-from sian.interpret.plotting.plotting import (
+# from sian.interpret.plotting.plotting import (
+#     plot_1D_log_log_interaction_histogram,
+#     plot_2D_log_log_interaction_histogram,
+
+#     fancy_plot_archipelago_covariances,
+# )
+
+from sian.interpret.plotting import (
     plot_1D_log_log_interaction_histogram,
     plot_2D_log_log_interaction_histogram,
 

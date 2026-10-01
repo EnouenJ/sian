@@ -193,13 +193,16 @@ class FastSHAPMasked_GAM(nn.Module):
 class MaskedMLP(nn.Module):
     def __init__(self,sizes,small_sizes=[0,16,12,8,1]):
         super(MaskedMLP,self).__init__()
-        sizes[0] = 2*sizes[0]
-        self.sizes = sizes
-        self.dnn = FeedForwardDNN(sizes)
+        # sizes[0] = 2*sizes[0]
+        # self.sizes = sizes
+        self.sizes = copy.deepcopy(sizes) #finally changed 09/25/26 @ 6:30pm
+        self.sizes[0] = 2*self.sizes[0]
+        self.dnn = FeedForwardDNN(self.sizes)
         self.value = 0 #masked value
 
     def forward(self, xx):
         x,S = xx
+        # print('MaskedMLP.forward()',x.shape,S.shape)
         x = x * S + self.value * (1-S)
         if True: #appending
             x = torch.cat((x,S),dim=1)
@@ -215,6 +218,54 @@ class MaskedMLP(nn.Module):
         pass
     def precompute_off(self):
         pass
+        
+    def predict(self, np_xs): #09/25/26 @ 7:00pm -- another hack b/c I dont think I have .device() implememnted everywhere
+        with torch.no_grad():
+            myD = np_xs.shape[1]//2
+            mydevice = self.dnn.hiddens[0].weight.device
+            xs_tup = (torch.Tensor(np_xs[:,:myD]).to(mydevice),torch.Tensor(np_xs[:,myD:]).to(mydevice))
+            # return self.forward( xs_tup )[0].cpu().numpy()
+            return self.forward( xs_tup )[0].cpu().numpy()[:,0] #09/25/26 @ 7:30pm
+
+
+
+
+
+class DoubleMaskedMLP(nn.Module):
+    def __init__(self,sizes,small_sizes=[0,16,12,8,1]):
+        super(DoubleMaskedMLP,self).__init__()
+        self.sizes = copy.deepcopy(sizes)
+        self.sizes[0] = 3*self.sizes[0]
+        self.dnn = FeedForwardDNN(self.sizes)
+        self.value = 0 #masked value
+
+    def forward(self, xx):
+        x,S,T = xx
+        x = x * T + self.value * (1-T)
+        if True: #appending
+            x = torch.cat((x,S,T),dim=1)
+        dnn_h = self.dnn(x)
+        gam_h = torch.zeros_like(dnn_h)
+        return dnn_h,gam_h,None
+
+    def collectParameters(self):
+        dnn_params = self.dnn.collectParameters()
+        return torch.cat([dnn_params])
+
+    def precompute_on(self, x): #DO nothing for MLP, just to look pretty (for usage by GAM)
+        pass
+    def precompute_off(self):
+        pass
+        
+    def predict(self, np_xs): #09/25/26 @ 7:00pm -- another hack b/c I dont think I have .device() implememnted everywhere
+        with torch.no_grad():
+            myD = np_xs.shape[1]//3
+            mydevice = self.dnn.hiddens[0].weight.device
+            xst_tup = (torch.Tensor(np_xs[:,:myD]).to(mydevice),
+                       torch.Tensor(np_xs[:,myD:2*myD]).to(mydevice),
+                       torch.Tensor(np_xs[:,2*myD:]).to(mydevice))
+            # return self.forward( xs_tup )[0].cpu().numpy()
+            return self.forward( xst_tup )[0].cpu().numpy()[:,0] #09/25/26 @ 7:30pm
 
 
 
