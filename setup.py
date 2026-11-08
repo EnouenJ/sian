@@ -23,9 +23,11 @@ def find_packages(path, base="" ):
 
 setuptools.setup(     
      name="sian",     
-     version="0.9.1",
+     version="0.9.5",
      python_requires=">=3.10",   
     #  packages=find_packages('src/sian'),
      packages=find_packages('src'),
-     package_dir = {"" : "src"}
+     package_dir = {"" : "src"},
+     long_description = """A python package to support interpretable modeling through "sparse interaction additive networks" which leverage sparse higher-order feature interactions to automatically balance interpretability and capability using neural networks.
+"""
 )
